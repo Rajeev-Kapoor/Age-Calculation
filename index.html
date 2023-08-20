@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Age calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    /*.attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }*/
+body{
+    background-color:rgb(210, 205, 205);
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+  }
+
+#box{
+height: 400px;
+width: 500px;
+border-radius: 10px;
+background-color: hsl(0, 9%, 98%);
+border-bottom-right-radius: 150px;
+display:grid;
+grid-template-rows: 0.7fr 1.2fr;
+grid-template-columns: repeat(4 , 1fr);
+font-weight: bold;
+}
+p{
+  padding-left: 20px;
+  margin-bottom: 0;
+  font-size: 70%;
+  font-weight: bold;
+  color: grey;
+
+}
+
+input{
+  color: grey;
+  text-align: center;
+  text-decoration: solid;
+  font-weight:bold;
+  margin-left: 20px;
+  display: block;
+  height: 30px;
+  max-width: 70px;
+  border: 1px solid hsl(0, 0%, 86%);
+  border-radius: 6px;
+}
+.desg{
+display: grid;
+grid-area:2/ 1/ 2 /5 ;
+color: hsl(0, 0%, 8%);
+font-size:300%;
+font-weight:bold;
+text-align: left;
+padding-left: 50px;
+margin: 0;
+
+}
+#straight
+{
+display: flex;
+justify-content:start;
+align-items: end;
+
+}
+.line{
+ 
+  border-bottom: 1px solid rgb(117, 109, 109);
+  margin-bottom: 20px;
+}
+span{
+  color:blueviolet;
+}
+</style >
+</head>
+<body>
+<div  id="box">
+  <div>
+  <p>Day</p>
+  <input  id="date" type="datetime"  value="DD">
+  <p id = der></p>
+</div>
+<div class="line">
+  <p>Month</p>
+  <input  id="month" type="datetime" value="MM">
+  <p id = "mer"></p>
+</div>
+<div class="line">
+  <p>Year</p>
+  <input  id="year" type="datetime" value="YYYY">
+  <p id="eyr"></p>
+</div>
+<div id="straight"> 
+   <button style = " border-radius: 50%; background-color: blue" id ="click"><img  src="assets/images/icon-arrow.svg" alt="" ></button>
+</div>
+  <div></div>
+  <div class="desg"> 
+  <div><span id = "yrs">--</span>years<br> 
+   <span id = "moon">--</span> months <br>
+   <span id ="dtd">--</span > days</div>
+</div>
+</div>
+<div>
+  <script type="text/javascript">
+    document.getElementById("click").onclick=function()
+{
+validate();
+
+}
+function validate()
+{
+  let da = new Date()
+  
+  let cm =da.getMonth() +1
+  let cd =da.getDate()
+  let cy=da.getFullYear()
+
+      
+  let x = document.getElementById("date").value
+  let y = document.getElementById("month").value
+  let z = document.getElementById("year").value
+  let yage = cy-z
+  let mage = cm-y
+  let mdate = cd-x
+  let ver = 0
+
+    if(z<=cy && z>0 )
+   { 
+        if( mage < y-cm)
+        {
+         mage = cm+12-y
+          yage= yage-1
+          } 
+  
+    if(((y==1 || y==3 || y==5 ||y==7|| y==8|| y==10||y==12) && (x<=31 && x>0))
+    ||(( ( y ==2 && x<=28 || y==2 && x<=29 && Math.round(z/4)==(z/4) )
+     || y==4|| y==6|| y==9|| y==11) && (x<=30 && x > 0)) && (y<=12 && y>0))
+    { 
+      if(mdate<x-cd)
+         { 
+          if((y==1 || y==3 || y==5 ||y==7|| y==8|| y==10||y==12))
+            {
+               ver=31
+              }
+           if( y==4|| y==6|| y==9|| y==11)
+            {
+                ver = 30
+            }
+            if( y==2 && x<=28 && Math.round(z/4)==(z/4))
+            {
+               ver = 28
+             }
+            if(y==2 && x<=29 && Math.round(z/4)==(z/4))
+            {
+               ver = 29
+            } 
+            mage = mage-1
+            mdate = cd + ver -x
+            
+           if(mage < 0)
+           {
+             mage = 12+mage
+             yage = yage -1 
+            }
+          } 
+      
+          document.getElementById("dtd").innerHTML = mdate
+        document.getElementById("yrs").innerHTML = yage 
+        document.getElementById("moon").innerHTML = mage
+  
+        }   
+ 
+    else
+      {
+        document.getElementById("der").innerHTML = " Invalid date"
+        document.getElementById("mer").innerHTML = " Invalid month"
+        
+      }
+       
+      } else
+      {
+        document.getElementById("eyr").innerHTML = "Invalid year"
+      }
+
+   }
+/*Users should be able to:
+
+- View an age in years, months, and days after submitting a valid date through the form
+- Receive validation errors if:
+  - Any field is empty when the form is submitted
+  - The day number is not between 1-31
+  - The month number is not between 1-12
+  - The year is in the future
+  - The date is invalid e.g. 31/04/1991 (there are 30 days in April)
+- View the optimal layout for the interface depending on their device's screen size
+- See hover and focus states for all interactive elements on the page
+- **Bonus**: See the age numbers animate to their final number when the form is submitted
+*/
+  </script>
+</body>
+</html>
